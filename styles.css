@@ -1,6 +1,6 @@
 :root {
     --primary-color: #ec1f55;
-    --text-color: #333;
+    --text-color: #fff;
 }
 
 * {
@@ -22,6 +22,11 @@ html {
     position: relative;
     max-width: 480px;
     margin: 0 auto;
+    background: linear-gradient(
+        286.07deg,
+        rgba(23, 15, 35, 0.95) 55.21%,
+        rgba(23, 15, 35, 0.6)
+    );
 }
 
 .player .icon-pause {
@@ -38,7 +43,7 @@ html {
 
 .dashboard {
     padding: 16px 16px 14px;
-    background-color: #fff;
+    background-color: #170f23;
     position: fixed;
     top: 0;
     width: 100%;
@@ -87,7 +92,7 @@ header h2 {
 }
 
 .control .btn {
-    color: #666;
+    color: #ccc;
     padding: 18px;
     font-size: 18px;
 }
@@ -110,7 +115,6 @@ header h2 {
 
 .progress {
     width: 100%;
-    -webkit-appearance: none;
     height: 6px;
     background: #d3d3d3;
     outline: none;
@@ -120,7 +124,6 @@ header h2 {
 }
 
 .progress::-webkit-slider-thumb {
-    -webkit-appearance: none;
     appearance: none;
     width: 12px;
     height: 6px;
@@ -138,7 +141,7 @@ header h2 {
     display: flex;
     align-items: center;
     margin-bottom: 12px;
-    background-color: #fff;
+    background-color: #130c1c;
     padding: 8px 16px;
     border-radius: 5px;
     box-shadow: 0 2px 3px rgba(0, 0, 0, 0.1);
@@ -185,4 +188,19 @@ header h2 {
     padding: 16px 8px;
     color: #999;
     font-size: 18px;
+}
+
+.timeSong {
+    display: flex;
+    justify-content: space-between;
+}
+
+.progress::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 25px;
+    height: 25px;
+    background: #4caf50;
+    cursor: pointer;
+    border-radius: 50%;
 }

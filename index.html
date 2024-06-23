@@ -69,6 +69,10 @@
                 />
 
                 <audio id="audio" src=""></audio>
+                <div class="timeSong">
+                    <div class="format-time">00:00</div>
+                    <div class="duration-time">00:00</div>
+                </div>
             </div>
 
             <!-- Playlist -->
@@ -97,6 +101,8 @@
             const $ = document.querySelector.bind(document);
             const $$ = document.querySelectorAll.bind(document);
 
+            const PLAYER_STORAGE_KEY = "Hữu Sang CV";
+
             const heading = $("header h2");
             const cdThumb = $(".cd-thumb");
             const audio = $("#audio");
@@ -114,6 +120,8 @@
                 isPlaying: false,
                 isRandom: false,
                 isRepeat: false,
+                config:
+                    JSON.parse(localStorage.getItem(PLAYER_STORAGE_KEY)) || {},
                 songs: [
                     {
                         name: "Cẩm tú cầu",
@@ -140,6 +148,13 @@
                         image: "./images/img-4.jpg",
                     },
                 ],
+                setConfig: function (key, value) {
+                    this.config[key] = value;
+                    localStorage.setItem(
+                        PLAYER_STORAGE_KEY,
+                        JSON.stringify(this.config)
+                    );
+                },
                 render: function () {
                     const htmls = this.songs.map(function (map, index) {
                         return `
@@ -227,7 +242,16 @@
                             if (audio.duration) {
                                 const progressPercent =
                                     (audio.currentTime / audio.duration) * 100;
+
                                 progress.value = progressPercent;
+                                $(".format-time").textContent =
+                                    _this.formatTime(audio.currentTime);
+                                console.log(Math.floor(audio.duration));
+
+                                $(".duration-time").textContent =
+                                    _this.totalDuration(
+                                        Math.floor(audio.duration)
+                                    );
                             }
                         };
 
@@ -264,15 +288,15 @@
                     //Xử lý khi random
                     randomBtn.onclick = function () {
                         _this.isRandom = !_this.isRandom;
+                        _this.setConfig("isRandom", _this.isRandom);
                         randomBtn.classList.toggle("active", _this.isRandom);
-                        repeatBtn.classList.remove("active");
                     };
 
                     // //Xử lý khi repeat
                     repeatBtn.onclick = function () {
                         _this.isRepeat = !_this.isRepeat;
+                        _this.setConfig("isRepeat", _this.isRepeat);
                         repeatBtn.classList.toggle("active", _this.isRepeat);
-                        randomBtn.classList.remove("active");
                         _this.repeatSong();
                     };
 
@@ -318,6 +342,10 @@
                     cdThumb.style.backgroundImage = `url(${this.currentSongs.image})`;
                     audio.src = this.currentSongs.path;
                 },
+                loadConfig: function () {
+                    this.isRandom = this.config.isRandom;
+                    this.isRepeat = this.config.isRepeat;
+                },
                 nextSong: function () {
                     this.currentIndex++;
                     if (this.currentIndex >= this.songs.length) {
@@ -332,6 +360,41 @@
                     }
                     this.loadCurrentSong();
                 },
+                formatTime: function (sec_num) {
+                    let hours = Math.floor(sec_num / 3600);
+                    let minutes = Math.floor((sec_num - hours * 3600) / 60);
+                    let seconds = Math.floor(
+                        sec_num - hours * 3600 - minutes * 60
+                    );
+
+                    hours = hours < 10 ? (hours > 0 ? "0" + hours : 0) : hours;
+
+                    if (minutes < 10) {
+                        minutes = "0" + minutes;
+                    }
+                    if (seconds < 10) {
+                        seconds = "0" + seconds;
+                    }
+                    return (
+                        (hours !== 0 ? hours + ":" : "") +
+                        minutes +
+                        ":" +
+                        seconds
+                    );
+                },
+                totalDuration: function (sec_num) {
+                    let hours = Math.floor(sec_num / 3600);
+                    let minutes = Math.floor((sec_num - hours * 3600) / 60);
+                    let seconds = Math.floor(
+                        sec_num - hours * 3600 - minutes * 60
+                    );
+                    return (
+                        (hours !== 0 ? hours + ":" : "0") +
+                        minutes +
+                        ":" +
+                        seconds
+                    );
+                },
                 randomSong: function () {
                     let newIndex;
                     do {
@@ -343,6 +406,9 @@
                     this.loadCurrentSong();
                 },
                 start: function () {
+                    //Load config
+                    this.loadConfig();
+
                     //Định nghĩa các thuộc tính cho Object
                     this.defineProperties();
 
@@ -354,6 +420,9 @@
 
                     //Render playlist
                     this.render();
+
+                    randomBtn.classList.toggle("active", this.isRandom);
+                    repeatBtn.classList.toggle("active", this.isRepeat);
                 },
             };
 
