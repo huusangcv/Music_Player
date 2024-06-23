@@ -124,8 +124,9 @@
                     JSON.parse(localStorage.getItem(PLAYER_STORAGE_KEY)) || {},
                 songs: [
                     {
-                        name: "Cẩm tú cầu",
-                        singer: "RAYO x HuynhVan",
+                        name: "KHÔNG YÊU ĐẾN THẾ ĐÂU",
+                        singer: "Ogenus x Pháp Kiều",
+
                         path: "./songs/song-1.mp3",
                         image: "./images/img-1.jpg",
                     },
@@ -146,6 +147,24 @@
                         singer: "Obito",
                         path: "./songs/song-4.mp3",
                         image: "./images/img-4.jpg",
+                    },
+                    {
+                        name: "Yêu 5",
+                        singer: "Rhymastic",
+                        path: "./songs/song-5.mp3",
+                        image: "./images/img-5.jpg",
+                    },
+                    {
+                        name: "Cẩm tú cầu",
+                        singer: "RAYO x HuynhVan",
+                        path: "./songs/song-6.mp3",
+                        image: "./images/img-6.jpg",
+                    },
+                    {
+                        name: "Lâu Rồi Chưa Hôn",
+                        singer: "Ogenus",
+                        path: "./songs/song-6.mp3",
+                        image: "./images/img-6.jpg",
                     },
                 ],
                 setConfig: function (key, value) {
@@ -388,8 +407,14 @@
                     let seconds = Math.floor(
                         sec_num - hours * 3600 - minutes * 60
                     );
+                    if (minutes < 10) {
+                        minutes = "0" + minutes;
+                    }
+                    if (seconds < 10) {
+                        seconds = "0" + seconds;
+                    }
                     return (
-                        (hours !== 0 ? hours + ":" : "0") +
+                        (hours !== 0 ? hours + ":" : "") +
                         minutes +
                         ":" +
                         seconds

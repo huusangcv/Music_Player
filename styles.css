@@ -204,3 +204,8 @@ header h2 {
     cursor: pointer;
     border-radius: 50%;
 }
+
+.format-time,
+.duration-time {
+    color: #fff;
+}
